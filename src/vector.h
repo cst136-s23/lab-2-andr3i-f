@@ -47,7 +47,7 @@ public:
     items = newItems;
   }
 
-  void remove_if(std::function<bool(T&)> fn) override {
+  void remove_if(std::function<bool(T&)> fn) {
     for (size_t i{}; i < len; ++i) {
       if (fn(items[i])) {
         if ((i+1) == len) {

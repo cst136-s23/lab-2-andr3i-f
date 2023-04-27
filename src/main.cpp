@@ -1,7 +1,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "list.h"
+#include "vector.h"
+#include "settings.h"
+#include "Entity.h"
+#include "Player.h"
+#include "Alien.h"
+#include "Trilobite.h"
+#include "Bullet.h"
 
 void processEvents(sf::RenderWindow & window) {
   sf::Event event;
@@ -12,19 +18,16 @@ void processEvents(sf::RenderWindow & window) {
   }
 }
 
-void update(float dt, const List<sf::CircleShape> & items) {
-  items.for_each([&](auto & item) {
-    item.move(5*dt, 10*dt);
-  });
+void update(float dt, const Vector<Entity *> & items) {
 }
 
-void render(sf::RenderWindow & window, const List<sf::CircleShape> & items) {
+void render(sf::RenderWindow & window, const Vector<Entity *> & items) {
   // always clear
   window.clear();
 
   // draw whatever
-  items.for_each([&](const auto & item) {
-    window.draw(item);
+  items.for_each([&](Entity * item){
+    item->render(window);
   });
 
   // swap the buffer
@@ -32,16 +35,12 @@ void render(sf::RenderWindow & window, const List<sf::CircleShape> & items) {
 }
 
 int main() {
-  sf::RenderWindow window{sf::VideoMode{800, 600}, "MyProject"};
+  sf::RenderWindow window{sf::VideoMode{settings::WINDOW_WIDTH, settings::WINDOW_HEIGHT}, "Alien Invader"};
   window.setVerticalSyncEnabled(true);
 
-  List<sf::CircleShape> items{};
-
-  sf::CircleShape circle{15};
-  circle.setFillColor(sf::Color::Cyan);
-  circle.setPosition(100, 100);
-
-  items.append(circle);
+  Vector<Entity *> items{};
+  Player player{};
+  items.append(&player);
 
   // https://subscription.packtpub.com/book/game+development/9781849696845/1/ch01lvl1sec11/game-loops-and-frames
   // https://gafferongames.com/post/fix_your_timestep/

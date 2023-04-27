@@ -16,6 +16,12 @@ add_executable(${PROJECT_NAME}
     src/collection.h
     src/list.h
     src/vector.h
+    src/Entity.h
+    src/Bullet.h
+    src/Player.h
+    src/Alien.h
+    src/Trilobite.h
+    src/settings.h
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
