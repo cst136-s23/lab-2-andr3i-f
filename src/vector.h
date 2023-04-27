@@ -47,6 +47,19 @@ public:
     items = newItems;
   }
 
+  void remove_if(std::function<bool(T&)> fn) override {
+    for (size_t i{}; i < len; ++i) {
+      if (fn(items[i])) {
+        if ((i+1) == len) {
+          --len;
+        } else {
+          std::swap(items[len-1], items[i]);
+          --len;
+        }
+      }
+    }
+  }
+
   void for_each(std::function<void(T&)> fn) const override {
     for (size_t i{}; i < len; ++i) {
       fn(items[i]);
