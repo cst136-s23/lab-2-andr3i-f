@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 #include "Entity.h"
 #include "Player.h"
@@ -20,7 +21,7 @@ public:
 
         sf::Vector2f resultant{ playerPosition - static_cast<sf::Vector2f>(mousePosition) };
         float length{ sqrtf(powf(resultant.x, 2) + powf(resultant.y, 2)) };
-        direction = sf::Vector2f(resultant.x / length, resultant.y / length);
+        direction = sf::Vector2f( - resultant.x / length, - resultant.y / length);
     }
 
     void render(sf::RenderWindow & window) override {

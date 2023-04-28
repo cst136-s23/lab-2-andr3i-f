@@ -8,8 +8,8 @@ class Player : public Entity {
 public:
     Player() {
         sf::Vector2f size{30.f, 45.f};
-        moveX = 5.f;
-        moveY = 5.f;
+        moveX = 1.f;
+        moveY = 1.f;
 
 
         shape.setSize(size);
