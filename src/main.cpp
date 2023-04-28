@@ -18,11 +18,19 @@ void processEvents(sf::RenderWindow & window) {
   }
 }
 
-void update(float dt, const Vector<Entity *> & items, Player & player) {
+void update(float dt, Vector<Entity *> & items, Player & player, sf::RenderWindow & window) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { player.moveUp(); }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { player.moveDown(); }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { player.moveLeft(); }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { player.moveRight(); }
+
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+    items.append(new Bullet{player, sf::Mouse::getPosition(window)});
+  }
+
+  items.for_each([](Entity * item){
+    item->move();
+  });
 }
 
 void render(sf::RenderWindow & window, const Vector<Entity *> & items) {
@@ -59,7 +67,7 @@ int main() {
     while (t > dt) {
       t -= dt;
       processEvents(window);
-      update(dt.asSeconds(), items, player);
+      update(dt.asSeconds(), items, player, window);
     }
 
     render(window, items);
