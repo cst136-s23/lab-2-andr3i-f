@@ -45,12 +45,28 @@ public:
         shape.move(moveX, moveY);
     }
 
+    void forceKill() override {
+        dead = true;
+    }
+
     void kill() override {
         if (health <= 0) { dead = true; }
     }
 
     bool isDead() override {
         return dead;
+    }
+
+    void hit() override {
+        health -= 10;
+    }
+
+    int type() override {
+        return 1;
+    }
+
+    sf::FloatRect getBounds() override {
+        return shape.getGlobalBounds();
     }
 
 protected:

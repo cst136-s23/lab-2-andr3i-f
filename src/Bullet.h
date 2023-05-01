@@ -12,7 +12,7 @@ class Bullet : public Entity {
 public:
     Bullet() = default;
     Bullet(sf::Vector2f playerPosition, sf::Vector2i mousePosition) {
-        sf::Vector2f size{2.5f, 3.f};
+        sf::Vector2f size{4.f, 4.f};
 
         shape.setSize(size);
         shape.setFillColor(sf::Color::Yellow);
@@ -34,6 +34,10 @@ public:
 
     sf::Vector2f getPosition() override { return shape.getPosition(); }
 
+    void forceKill() override {
+        dead = true;
+    }
+
     void kill() override {
         sf::Vector2f currentPosition{getPosition()};
 
@@ -47,6 +51,16 @@ public:
 
     bool isDead() override {
         return dead;
+    }
+
+    void hit() override {}
+
+    int type() override {
+        return 3;
+    }
+
+    sf::FloatRect getBounds() override {
+        return shape.getGlobalBounds();
     }
 
 private:

@@ -1,4 +1,5 @@
-// Images used from https://opengameart.org/content/shoot-em-up-enemies
+// Object images used from https://opengameart.org/content/shoot-em-up-enemies
+// Background image used from https://opengameart.org/content/galaxy-skybox
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
@@ -26,17 +27,52 @@ void update(float dt, Vector<Entity *> & items, sf::RenderWindow & window) {
     items.append(new Bullet{ items[0]->getPosition(), sf::Mouse::getPosition(window)});
   }
 
-  items.for_each([](Entity * item) {
+  items.for_each([&](Entity * item) {
     item->move();
     item->kill();
+
+    // Checks for collisions, player type = 0, alien type = 1,
+    // trilobite type = 2, bullet type = 3
+    int oneType{ item->type() };
+    items.for_each([&](Entity * itemTwo) {
+      if (!itemTwo->isDead() && !item->isDead()) {
+        int twoType{ itemTwo->type() };
+
+        if (oneType == 0 && (twoType == 1 || twoType == 2)) {
+          if (item->getBounds().intersects(itemTwo->getBounds())) {
+            itemTwo->forceKill();
+            item->hit();
+          }
+        }
+        else if (oneType == 3 && (twoType == 1 || twoType == 2)) {
+          if (item->getBounds().intersects(itemTwo->getBounds())) {
+            item->forceKill();
+            itemTwo->hit();
+          }
+        }
+        else if (twoType == 0 && (oneType == 1 || oneType == 2)) {
+          if (item->getBounds().intersects(itemTwo->getBounds())) {
+            item->forceKill();
+            itemTwo->hit();
+          }
+        }
+        else if (twoType == 3 && (oneType == 1 || oneType == 2)) {
+          if (item->getBounds().intersects(itemTwo->getBounds())) {
+            itemTwo->forceKill();
+            item->hit();
+          }
+        }
+      }
+    });
   });
 }
 
-void render(sf::RenderWindow & window, const Vector<Entity *> & items) {
+void render(sf::RenderWindow & window, const Vector<Entity *> & items, sf::Sprite & bgImage) {
   // always clear
   window.clear();
 
   // draw whatever
+  window.draw(bgImage);
   items.for_each([&](Entity * item){
     item->render(window);
   });
@@ -52,6 +88,12 @@ int main() {
   Vector<Entity *> items{};
   Player * player = new Player{};
   items.append(player);
+
+  sf::Texture backgroundImage;
+  if (!backgroundImage.loadFromFile("images\\galaxy.png")) {
+    std::cerr << "Could not find galaxy image\n";
+  }
+  sf::Sprite backgroundSprite(backgroundImage);
 
   std::random_device rd;
 
@@ -91,7 +133,7 @@ int main() {
       return item->isDead();
     });
 
-    render(window, items);
+    render(window, items, backgroundSprite);
   }
 
   items.remove_if([&](Entity * item) { 

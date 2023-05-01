@@ -19,6 +19,25 @@ public:
 
         shape.setTexture(texture);
 
+        if (!font.loadFromFile("fonts\\arial.ttf")) {
+            std::cerr << "Could not load arial font\n";
+        }
+
+        text.setFont(font);
+        text.setFillColor(sf::Color::White);
+        text.setCharacterSize(18);
+        text.setStyle(sf::Text::Bold);
+        text.setString("Player Health");
+        text.setPosition(sf::Vector2f(6.f, settings::WINDOW_HEIGHT - 24.f));
+
+        healthBarMax.setSize(sf::Vector2f(124.f, 20.f));
+        healthBarMax.setFillColor(sf::Color::Red);
+        healthBarMax.setPosition(sf::Vector2f(5.f, settings::WINDOW_HEIGHT - 25.f));
+
+        healthBar.setSize(sf::Vector2f(124.f, 20.f));
+        healthBar.setFillColor(sf::Color::Green);
+        healthBar.setPosition(sf::Vector2f(5.f, settings::WINDOW_HEIGHT - 25.f));
+
         moveX = 1.f;
         moveY = 1.f;
 
@@ -38,6 +57,10 @@ public:
         
         shape.setRotation(rotation + 180);
 
+        window.draw(healthBarMax);
+        window.draw(healthBar);
+        window.draw(text);
+
         window.draw(shape);
     }
 
@@ -50,12 +73,29 @@ public:
 
     sf::Vector2f getPosition() override { return shape.getPosition(); }
 
+    void forceKill() override {
+        dead = true;
+    }
+
     void kill() override {
         if (health <= 0) { dead = true; }
     }
 
     bool isDead() override {
         return dead;
+    }
+
+    void hit() override {
+        health -= 10;
+        healthBar.setSize(sf::Vector2f(((health / healthMax) * 124.f), 20.f));
+    }
+
+    int type() override {
+        return 0;
+    }
+
+    sf::FloatRect getBounds() override {
+        return shape.getGlobalBounds();
     }
     
     void moveUp() {
@@ -78,9 +118,15 @@ private:
     sf::Sprite shape;
     sf::Texture texture;
 
+    sf::Font font;
+    sf::Text text;
+    sf::RectangleShape healthBar;
+    sf::RectangleShape healthBarMax;
+
     float moveX{};
     float moveY{};
 
     bool dead{ false };
-    int health = 100;
+    float health = 100.f;
+    float healthMax = 100.f;
 };
