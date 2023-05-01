@@ -15,7 +15,16 @@ public:
 
         shape.setTexture(texture);
 
-        health = 250;
+        health = 300.f;
+        healthMax = 300.f;
+
+        healthBarMax.setSize(sf::Vector2f(25.f, 4.f));
+        healthBarMax.setFillColor(sf::Color::Red);
+        healthBarMax.setPosition((positionX - 13.f) , (positionY - 36.f));
+        
+        healthBar.setSize(sf::Vector2f(25.f, 4.f));
+        healthBar.setFillColor(sf::Color::Green);
+        healthBar.setPosition((positionX - 13.f) , (positionY - 36.f));
 
         moveX == 0 ? this->moveX = 1 : this->moveX = moveX;
         moveY == 0 ? this->moveY = 1 : this->moveY = moveY;
@@ -26,6 +35,8 @@ public:
     }
 
     void render(sf::RenderWindow & window) override {
+        window.draw(healthBarMax);
+        window.draw(healthBar);
         window.draw(shape);
     }
 
@@ -40,6 +51,8 @@ public:
         }
 
         shape.move(moveX, moveY);
+        healthBar.move(moveX, moveY);
+        healthBarMax.move(moveX, moveY);
     }
 
     void forceKill() override {
@@ -56,6 +69,7 @@ public:
 
     void hit() override {
         health -= 10;
+        healthBar.setSize(sf::Vector2f(((health / healthMax) * 25.f), 4.f));
     }
 
     int type() override {

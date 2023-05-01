@@ -13,8 +13,17 @@ public:
         }
 
         shape.setTexture(texture);
+        
+        healthBarMax.setSize(sf::Vector2f(25.f, 4.f));
+        healthBarMax.setFillColor(sf::Color::Red);
+        healthBarMax.setPosition((positionX - 13.f) , (positionY - 38.f));
+        
+        healthBar.setSize(sf::Vector2f(25.f, 4.f));
+        healthBar.setFillColor(sf::Color::Green);
+        healthBar.setPosition((positionX - 13.f) , (positionY - 38.f));
 
-        health = 150;
+        health = 150.f;
+        healthMax = 150.f;
 
         sf::Vector2f size{20.f, 25.f};
 
@@ -27,6 +36,8 @@ public:
     }
 
     void render(sf::RenderWindow & window) override {
+        window.draw(healthBarMax);
+        window.draw(healthBar);
         window.draw(shape);
     }
 
@@ -43,6 +54,8 @@ public:
         }
 
         shape.move(moveX, moveY);
+        healthBar.move(moveX, moveY);
+        healthBarMax.move(moveX, moveY);
     }
 
     void forceKill() override {
@@ -59,6 +72,7 @@ public:
 
     void hit() override {
         health -= 10;
+        healthBar.setSize(sf::Vector2f(((health / healthMax) * 25.f), 4.f));
     }
 
     int type() override {
@@ -73,7 +87,11 @@ protected:
     sf::Sprite shape;
     sf::Texture texture;
 
-    int health{};
+    sf::RectangleShape healthBar;
+    sf::RectangleShape healthBarMax;
+
+    float health{};
+    float healthMax{};
     bool dead{ false };
 
     float moveX{};
