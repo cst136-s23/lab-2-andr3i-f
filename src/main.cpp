@@ -1,3 +1,5 @@
+// Images used from https://opengameart.org/content/shoot-em-up-enemies
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <random>
@@ -48,7 +50,7 @@ int main() {
   window.setVerticalSyncEnabled(true);
 
   Vector<Entity *> items{};
-  Player * player = new Player{items};
+  Player * player = new Player{};
   items.append(player);
 
   std::random_device rd;

@@ -8,6 +8,12 @@ class Alien : public Entity {
 public:
     Alien() = default;
     Alien(float moveX, float moveY, float positionX, float positionY) {
+        if (!texture.loadFromFile("images\\alien.png")) {
+            std::cerr << "Could not find alien image\n";
+        }
+
+        shape.setTexture(texture);
+
         health = 150;
 
         sf::Vector2f size{20.f, 25.f};
@@ -15,9 +21,7 @@ public:
         moveX == 0 ? this->moveX = 1 : this->moveX = moveX;
         moveY == 0 ? this->moveY = 1 : this->moveY = moveY;
 
-        shape.setSize(size);
-        shape.setFillColor(sf::Color::Green);
-        shape.setOrigin(size.x / 2, size.y / 2);
+        shape.setOrigin(shape.getTextureRect().width / 2, shape.getTextureRect().height / 2);
 
         shape.setPosition(positionX, positionY);
     }
@@ -50,7 +54,8 @@ public:
     }
 
 protected:
-    sf::RectangleShape shape;
+    sf::Sprite shape;
+    sf::Texture texture;
 
     int health{};
     bool dead{ false };

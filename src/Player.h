@@ -1,28 +1,43 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <math.h>
+#include <iostream>
 
 #include "Entity.h"
 #include "vector.h"
 #include "Bullet.h"
 
+#define PI 3.14159265
+
 class Player : public Entity {
 public:
-    Player(Vector<Entity *> & gameObjects) {
-        sf::Vector2f size{30.f, 45.f};
-        items = gameObjects;
+    Player() {
+        if (!texture.loadFromFile("images\\player.png")) {
+            std::cerr << "Could not find player image\n";
+        }
+
+        shape.setTexture(texture);
+
         moveX = 1.f;
         moveY = 1.f;
 
-
-        shape.setSize(size);
-        shape.setFillColor(sf::Color::Blue);
-        shape.setOrigin(size.x / 2, size.y / 2);
+        shape.setOrigin(shape.getTextureRect().width / 2, shape.getTextureRect().height / 2);
 
         shape.setPosition(400, 400);
     };
 
     void render(sf::RenderWindow & window) override {
+        sf::Vector2f currentPosition{ getPosition() };
+        sf::Vector2f mousePosition{ sf::Mouse::getPosition(window) };
+
+        float dx{ currentPosition.x - mousePosition.x };
+        float dy{ currentPosition.y - mousePosition.y };
+
+        float rotation{ static_cast<float>(atan2(dy, dx) * 180 / PI) };
+        
+        shape.setRotation(rotation + 180);
+
         window.draw(shape);
     }
 
@@ -60,11 +75,11 @@ public:
     }
 
 private:
-    sf::RectangleShape shape;
+    sf::Sprite shape;
+    sf::Texture texture;
+
     float moveX{};
     float moveY{};
-
-    Vector<Entity *> items{};
 
     bool dead{ false };
     int health = 100;
