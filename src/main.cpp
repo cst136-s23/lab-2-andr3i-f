@@ -94,7 +94,7 @@ void render(sf::RenderWindow & window, Vector<Entity *> & items, sf::Sprite & bg
 }
 
 int main() {
-  sf::RenderWindow window{sf::VideoMode{settings::WINDOW_WIDTH, settings::WINDOW_HEIGHT}, "Alien Invader"};
+  sf::RenderWindow window{sf::VideoMode{settings::WINDOW_WIDTH, settings::WINDOW_HEIGHT}, "Dodge The Aliens"};
   window.setVerticalSyncEnabled(true);
 
   Vector<Entity *> items{};
