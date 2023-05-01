@@ -28,15 +28,15 @@ public:
         text.setCharacterSize(18);
         text.setStyle(sf::Text::Bold);
         text.setString("Player Health");
-        text.setPosition(sf::Vector2f(6.f, settings::WINDOW_HEIGHT - 24.f));
+        text.setPosition(sf::Vector2f(6.f, 5.f));
 
         healthBarMax.setSize(sf::Vector2f(124.f, 20.f));
         healthBarMax.setFillColor(sf::Color::Red);
-        healthBarMax.setPosition(sf::Vector2f(5.f, settings::WINDOW_HEIGHT - 25.f));
+        healthBarMax.setPosition(sf::Vector2f(5.f, 5.f));
 
         healthBar.setSize(sf::Vector2f(124.f, 20.f));
         healthBar.setFillColor(sf::Color::Green);
-        healthBar.setPosition(sf::Vector2f(5.f, settings::WINDOW_HEIGHT - 25.f));
+        healthBar.setPosition(sf::Vector2f(5.f, 5.f));
 
         moveX = 1.f;
         moveY = 1.f;
