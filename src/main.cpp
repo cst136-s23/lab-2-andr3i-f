@@ -67,7 +67,7 @@ void update(float dt, Vector<Entity *> & items, sf::RenderWindow & window) {
   });
 }
 
-void render(sf::RenderWindow & window, const Vector<Entity *> & items, sf::Sprite & bgImage) {
+void render(sf::RenderWindow & window, Vector<Entity *> & items, sf::Sprite & bgImage, sf::Text gameOverText) {
   // always clear
   window.clear();
 
@@ -76,6 +76,10 @@ void render(sf::RenderWindow & window, const Vector<Entity *> & items, sf::Sprit
   items.for_each([&](Entity * item){
     item->render(window);
   });
+
+  if (items[0]->type() != 0) {
+    window.draw(gameOverText);
+  }
 
   // swap the buffer
   window.display();
@@ -88,6 +92,19 @@ int main() {
   Vector<Entity *> items{};
   Player * player = new Player{};
   items.append(player);
+
+  sf::Font font;
+  sf::Text gameOverText;
+
+  if (!font.loadFromFile("fonts\\arial.ttf")) {
+    std::cerr << "Could not load arial font\n";
+  }
+
+  gameOverText.setFont(font);
+  gameOverText.setCharacterSize(50);
+  gameOverText.setStyle(sf::Text::Bold);
+  gameOverText.setString("GAME OVER L");
+  gameOverText.setPosition(sf::Vector2f(((settings::WINDOW_WIDTH / 2) - 175), settings::WINDOW_HEIGHT / 2));
 
   sf::Texture backgroundImage;
   if (!backgroundImage.loadFromFile("images\\galaxy.png")) {
@@ -133,7 +150,7 @@ int main() {
       return item->isDead();
     });
 
-    render(window, items, backgroundSprite);
+    render(window, items, backgroundSprite, gameOverText);
   }
 
   items.remove_if([&](Entity * item) { 
