@@ -67,7 +67,7 @@ void update(float dt, Vector<Entity *> & items, sf::RenderWindow & window) {
   });
 }
 
-void render(sf::RenderWindow & window, Vector<Entity *> & items, sf::Sprite & bgImage, sf::Text gameOverText) {
+void render(sf::RenderWindow & window, Vector<Entity *> & items, sf::Sprite & bgImage, sf::Text gameOverText, sf::Text gameWonText, bool & gameWon) {
   // always clear
   window.clear();
 
@@ -79,6 +79,14 @@ void render(sf::RenderWindow & window, Vector<Entity *> & items, sf::Sprite & bg
 
   if (items[0]->type() != 0) {
     window.draw(gameOverText);
+  }
+
+  if (items.size() == 1) { 
+    gameWon = true;
+  }
+
+  if (gameWon) {
+    window.draw(gameWonText);
   }
 
   // swap the buffer
@@ -95,6 +103,9 @@ int main() {
 
   sf::Font font;
   sf::Text gameOverText;
+  sf::Text gameWonText;
+
+  bool gameWon{ false };
 
   if (!font.loadFromFile("fonts\\arial.ttf")) {
     std::cerr << "Could not load arial font\n";
@@ -105,6 +116,12 @@ int main() {
   gameOverText.setStyle(sf::Text::Bold);
   gameOverText.setString("GAME OVER L");
   gameOverText.setPosition(sf::Vector2f(((settings::WINDOW_WIDTH / 2) - 175), settings::WINDOW_HEIGHT / 2));
+
+  gameWonText.setFont(font);
+  gameWonText.setCharacterSize(50);
+  gameWonText.setStyle(sf::Text::Bold);
+  gameWonText.setString("GAME WON NERD");
+  gameWonText.setPosition(sf::Vector2f(((settings::WINDOW_WIDTH / 2) - 225), settings::WINDOW_HEIGHT / 2));
 
   sf::Texture backgroundImage;
   if (!backgroundImage.loadFromFile("images\\galaxy.png")) {
@@ -150,7 +167,7 @@ int main() {
       return item->isDead();
     });
 
-    render(window, items, backgroundSprite, gameOverText);
+    render(window, items, backgroundSprite, gameOverText, gameWonText, gameWon);
   }
 
   items.remove_if([&](Entity * item) { 
