@@ -1,8 +1,10 @@
 // Object images used from https://opengameart.org/content/shoot-em-up-enemies
 // Background image used from https://opengameart.org/content/galaxy-skybox
+// Background music - "Battle in the Stratosphere" by Scott Eliott - https://opengameart.org/content/battle-in-the-stratosphere
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <random>
 
 #include "vector.h"
@@ -101,6 +103,13 @@ int main() {
   Player * player = new Player{};
   items.append(player);
 
+  sf::SoundBuffer buffer;
+  if (!buffer.loadFromFile("sounds\\Battle in the Stratosphereq.wav")) {
+    std::cerr << "Could not load background music\n";
+  }
+  sf::Sound sound;
+  sound.setBuffer(buffer);
+
   sf::Font font;
   sf::Text gameOverText;
   sf::Text gameWonText;
@@ -153,6 +162,8 @@ int main() {
   sf::Time t{sf::Time::Zero}; // time
   sf::Time dt{sf::seconds(1.0f / 60.0f)}; // delta time (fixed to 60fps)
 
+  sound.setVolume(8.f);
+  sound.play();
   while (window.isOpen()) {
     processEvents(window);
     t += clock.restart();
