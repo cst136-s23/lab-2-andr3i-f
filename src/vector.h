@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "collection.h"
 
 template <typename T>
@@ -47,13 +49,20 @@ public:
     items = newItems;
   }
 
+  T & operator[](size_t i) {
+    return items[i];
+  }
+
   void remove_if(std::function<bool(T&)> fn) {
     for (size_t i{}; i < len; ++i) {
       if (fn(items[i])) {
         if ((i+1) == len) {
+          delete items[i];
           --len;
         } else {
           std::swap(items[len-1], items[i]);
+          delete items[len-1];
+          --i;
           --len;
         }
       }

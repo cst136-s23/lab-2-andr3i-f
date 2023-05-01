@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include <iostream>
 
 #include "Entity.h"
 #include "Player.h"
@@ -10,9 +11,8 @@
 class Bullet : public Entity {
 public:
     Bullet() = default;
-    Bullet(Player & player, sf::Vector2i mousePosition) {
+    Bullet(sf::Vector2f playerPosition, sf::Vector2i mousePosition) {
         sf::Vector2f size{2.5f, 3.f};
-        sf::Vector2f playerPosition{ player.getPosition() };
 
         shape.setSize(size);
         shape.setFillColor(sf::Color::Yellow);
@@ -32,7 +32,26 @@ public:
         shape.move(direction * settings::bulletSpeed);
     }
 
+    sf::Vector2f getPosition() override { return shape.getPosition(); }
+
+    void kill() override {
+        sf::Vector2f currentPosition{getPosition()};
+
+        if (currentPosition.x < 0 || currentPosition.x > settings::WINDOW_WIDTH) {
+            dead = true;
+        }
+        if (currentPosition.y < 0 || currentPosition.y > settings::WINDOW_HEIGHT) {
+            dead = true;
+        }
+    }
+
+    bool isDead() override {
+        return dead;
+    }
+
 private:
     sf::RectangleShape shape;
     sf::Vector2f direction;
+
+    bool dead{ false };
 };
