@@ -9,7 +9,7 @@ class Trilobite : public Alien {
 public:
     Trilobite() = default;
     Trilobite(float moveX, float moveY, float positionX, float positionY) {
-        if (!texture.loadFromFile("images\\trilobite.png")) {
+        if (!texture.loadFromFile("images/trilobite.png")) {
             std::cerr << "Could not find trilobite image\n";
         }
 

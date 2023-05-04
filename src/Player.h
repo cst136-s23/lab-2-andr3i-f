@@ -13,13 +13,13 @@
 class Player : public Entity {
 public:
     Player() {
-        if (!texture.loadFromFile("images\\player.png")) {
+        if (!texture.loadFromFile("images/player.png")) {
             std::cerr << "Could not find player image\n";
         }
 
         shape.setTexture(texture);
 
-        if (!font.loadFromFile("fonts\\arial.ttf")) {
+        if (!font.loadFromFile("fonts/arial.ttf")) {
             std::cerr << "Could not load arial font\n";
         }
 

@@ -8,7 +8,7 @@ class Alien : public Entity {
 public:
     Alien() = default;
     Alien(float moveX, float moveY, float positionX, float positionY) {
-        if (!texture.loadFromFile("images\\alien.png")) {
+        if (!texture.loadFromFile("images/alien.png")) {
             std::cerr << "Could not find alien image\n";
         }
 

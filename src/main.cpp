@@ -104,7 +104,7 @@ int main() {
   items.append(player);
 
   sf::SoundBuffer buffer;
-  if (!buffer.loadFromFile("sounds\\Battle in the Stratosphereq.wav")) {
+  if (!buffer.loadFromFile("sounds/Battle in the Stratosphereq.wav")) {
     std::cerr << "Could not load background music\n";
   }
   sf::Sound sound;
@@ -116,7 +116,7 @@ int main() {
 
   bool gameWon{ false };
 
-  if (!font.loadFromFile("fonts\\arial.ttf")) {
+  if (!font.loadFromFile("fonts/arial.ttf")) {
     std::cerr << "Could not load arial font\n";
   }
 
@@ -133,7 +133,7 @@ int main() {
   gameWonText.setPosition(sf::Vector2f(((settings::WINDOW_WIDTH / 2) - 225), settings::WINDOW_HEIGHT / 2));
 
   sf::Texture backgroundImage;
-  if (!backgroundImage.loadFromFile("images\\galaxy.png")) {
+  if (!backgroundImage.loadFromFile("images/galaxy.png")) {
     std::cerr << "Could not find galaxy image\n";
   }
   sf::Sprite backgroundSprite(backgroundImage);
