@@ -40,28 +40,16 @@ void update(float dt, Vector<Entity *> & items, sf::RenderWindow & window) {
       if (!itemTwo->isDead() && !item->isDead()) {
         int twoType{ itemTwo->type() };
 
-        if (oneType == 0 && (twoType == 1 || twoType == 2)) {
+        if ((oneType == 0 && (twoType == 1 || twoType == 2)) || (twoType == 3 && (oneType == 1 || oneType == 2))) {
           if (item->getBounds().intersects(itemTwo->getBounds())) {
             itemTwo->forceKill();
             item->hit();
           }
         }
-        else if (oneType == 3 && (twoType == 1 || twoType == 2)) {
+        else if ((oneType == 3 && (twoType == 1 || twoType == 2)) || (twoType == 0 && (oneType == 1 || oneType == 2))) {
           if (item->getBounds().intersects(itemTwo->getBounds())) {
             item->forceKill();
             itemTwo->hit();
-          }
-        }
-        else if (twoType == 0 && (oneType == 1 || oneType == 2)) {
-          if (item->getBounds().intersects(itemTwo->getBounds())) {
-            item->forceKill();
-            itemTwo->hit();
-          }
-        }
-        else if (twoType == 3 && (oneType == 1 || oneType == 2)) {
-          if (item->getBounds().intersects(itemTwo->getBounds())) {
-            itemTwo->forceKill();
-            item->hit();
           }
         }
       }
