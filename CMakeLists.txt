@@ -16,9 +16,15 @@ add_executable(${PROJECT_NAME}
     src/collection.h
     src/list.h
     src/vector.h
+    src/Entity.h
+    src/Bullet.h
+    src/Player.h
+    src/Alien.h
+    src/Trilobite.h
+    src/settings.h
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics)
+target_link_libraries(${PROJECT_NAME} PRIVATE sfml-graphics sfml-audio)
 
 if (WIN32 AND BUILD_SHARED_LIBS)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
